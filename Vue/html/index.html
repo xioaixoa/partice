@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>this is a vue </title>
+    <script src="../vue/Vue.js"></script>
+</head>
+
+<body>
+
+    <div id="demo" v-bind:title="title">
+        <ol>
+            <li>
+                <!-- 这里就相当于是template -->
+                <p v-on:click="handleClick">{{msg}}!!!</p>
+                <p v-text="vtext"></p>
+                <p v-html="vhtml"></p>
+            </li>
+            <li>
+                <div><input v-model="content" /><div>{{content}}</div>
+                </div>
+                <li>
+                    <div>姓：<input v-model="firstName"> 名：
+                        <input v-model="lastName">
+                        <div>{{fullName}}</div>
+                        <div>{{count}}</div>
+                </li>
+            </li>
+        </ol>
+        </div>
+        
+        <div id="lst">
+                <div>
+                            <button @click="clickshow">{{tip}}</button>
+                            <ul>
+                                <li v-for="(item, index) of list" :key="item" v-if="show">{{item}}</li>
+                            </ul>
+                </div>
+            <input v-model="inputValue" />
+            <button @click="handleSubmit">submit</button>
+            <ul>
+                <li v-for="(item , index) of inputList" :key="index">{{item}}</li>
+            </ul>
+            <input v-model="value" />
+            <button @click="handleSubmit2">submit</button>
+            <ul>
+                <todo-item :content="item" v-for="(item,index) of list" 
+                :key="index" :index="index" @delete="handleDel"></todo-item>  
+                //4：@delete监听子组件返回的index  
+            </ul>
+        </div>
+
+
+        <script>
+            /*vue里面的属性，记得后面加逗号“,” 
+            el:,    //绑定元素id
+            data:{},   //数据   
+            template:"",   //实例
+            methods:{},    //方法
+            computed:{},    //计算属性
+            watch:{},    //监听器
+            components:{}   //组件
+            */
+
+            // 局部组件
+            // var TodoItem = {  //新建局部组件
+            //     props:['content'],  //接收值
+            //     template: "<li>{{content}}</li>",  //模板
+            // }
+            
+            // 全局组件
+            Vue.component("todo-item",{    //叫XXX的组件
+                props: ['content',"index"],   //接收值
+                template: '<li @click="handleDel">{{content}}</li>',    //实例  1：列表点击监听事件
+                methods:{
+                    handleDel: function(){                               //2：出发监听函数
+                        this.$emit("delete",this.index)                  //3：删除对应index
+                    }
+                }
+            })
+
+            new Vue({
+                el: "#demo",
+                // template:"<p>this a {{msg}}!!!</p>",
+                data: {
+                    msg: "this is a Vue.js",
+                    vtext: "<p>this is a passage </p>",
+                    vhtml: "<p>this is a passage </p>",
+                    title: "现在是title",
+                    content: "这是v-model双向数据绑定",
+                    firstName: "",
+                    lastName: "",
+                    count: 0
+                },
+                methods: {
+                    handleClick: function () {
+                        this.msg = "这是一个框架！"
+                    }
+                },
+                computed: {
+                    fullName: function () {
+                        return this.firstName + " " + this.lastName
+                    }
+                },
+                watch: {
+                    fullName: function () {
+                        this.count++
+                    }
+                }
+            })
+
+            new Vue({
+                el: "#lst",
+                //局部组件
+                // components:{
+                //     "todo-item":TodoItem,   //引入局部组件   
+                // },
+                data: {
+                    value:"yeah",
+                    list: [1, 2, 3, "d"],
+                    inputValue: "none",
+                    inputList: [],
+                    show: true,
+                    tip: "click",
+                },
+                methods: {
+                    handleSubmit: function () {
+                        this.inputList.push(this.inputValue);
+                    },
+                    handleSubmit2: function () {
+                        this.list.push(this.value);
+                    },
+                    clickshow: function () {
+                        this.show = !this.show;
+                        if (!this.show) {
+                            this.tip = "show";
+                        }
+                        else {
+                            this.tip = "hide"
+                        }
+                    },
+                    handleDel: function(index){    //5：子组件点击删除，父组件删除对应的index
+                        this.list.splice(index,1); 
+                    }
+                }
+            })       
+        </script>
+</body>
+</html>
