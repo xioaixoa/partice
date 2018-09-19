@@ -1,0 +1,26 @@
+Vue引用在head里面最好<head><script src="../vue/Vue.js"></script></head>
+元素和Vue绑定，
+挂载点：el属性对应id的元素，Vue只会处理挂载点的内容
+模板：挂载点内的内容
+实例：template
+输出方式：1，{{}}插值表达式  2，v-text
+methods:{}
+v-on：click监听 或者 @click 
+v-开始的东西表示一个表达式，是js
+v:bind可以写成：绑定vue中的数据
+v:model双向绑定
+computed:{}计算属性
+watch：{}监听器
+ /*vue里面的属性，记得后面加逗号“,” 
+            el:,    //绑定元素id
+            data:{},   //数据
+            template:"",   //实例
+            methods:{},    //方法
+            computed:{},    //计算属性
+            watch:{},    //监听器
+            */
+v-for：循环显示，最好加上：key = index,如果不需要排序可以使用index，如果需要排序或者做其他操作，不用index，存在问题。
+
+v-if：隐藏与显示，v-show也可以实现隐藏与显示，但是当只需要不频繁切换隐藏显示时用v-if可以。当频繁切换时用v-show，会自动加上display：none，并没有从dom中清除，这样就 不用重新渲染，性能好。而v-if会使元素从dom中清除，每次切换都得重新渲染，加载。
+组件拆分
+每一个组件就是一个实例，vue就是实例组成的  
