@@ -46,7 +46,7 @@
             <ul>
                 <todo-item :content="item" v-for="(item,index) of list" 
                 :key="index" :index="index" @delete="handleDel"></todo-item>  
-                //4：@delete监听子组件返回的index  
+                <!-- 4：@delete监听子组件返回的index   -->
             </ul>
         </div>
 
