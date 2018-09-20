@@ -1,0 +1,7 @@
+Webpack 可以将多种静态资源 js、css、less 转换成一个静态文件，减少了页面的请求。
+
+Webpack 本身只能处理 JavaScript 模块，如果要处理其他类型的文件，就需要使用 loader 进行转换。
+
+所以如果我们需要在应用中添加 css 文件，就需要使用到 css-loader 和 style-loader，他们做两件不同的事情，css-loader 会遍历 CSS 文件，然后找到 url() 表达式然后处理他们，style-loader 会把原来的 CSS 代码插入页面中的一个 style 标签中。
+
+我们可以将一些编译选项放在配置文件中，以便于统一管理
