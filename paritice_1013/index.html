@@ -1,0 +1,79 @@
+<html>
+    <head>
+        <script src="Vue.js"></script>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div id='first' class='center'>
+            First Name : {{firstName}}<br>
+            Last Name : {{lastName}}<br>
+            Full Name : {{fullName}}<br>
+            <button @click='changeName'>Change</button>
+        </div>
+    </body>
+    <div id='second' class="center">  
+       依赖另一个Vue：{{reversedText}}
+    </div>
+    <div id='third'>methods:{{date}}
+        <button @click='time'><br></button>
+        computed:{{now}}
+    </div>
+    <script>
+    
+    var first = new Vue ({
+        el:'#first', 
+        data:{
+            firstName:'Rain',
+            lastName:'X',
+        },
+        computed: {
+            fullName:{
+                get:function(){
+                    return this.firstName + ' ' + this.lastName;
+                },
+                set:function(newNames){
+                    var names = newNames.split(' ');;
+                    this.firstName = names[0];
+                    this.lastName = names[names.length - 1];
+                }
+            }
+        },
+        methods:{
+            changeName:function(){
+                this.firstName = 'Change';
+                this.lastName = 'Name'
+            }
+        }
+    })
+
+    var second = new Vue ({
+        el:'#second',
+        data:{
+           comp : '100' 
+        },
+        computed:{
+            reversedText:function(){
+                return first.fullName.split(' ').reverse().join('-')
+            }
+        }
+    })
+
+    var third = new Vue ({
+        el:'#third',
+        data:{
+           date: Date.now()
+        },
+        computed:{
+            now: function(){
+                return Date.now();
+            }
+        },
+        methods:{
+            time:function(){
+                return this.date=Date.now();
+            }
+        }
+    })
+
+    </script>
+</html>
