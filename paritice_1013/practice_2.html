@@ -1,0 +1,137 @@
+<!-- 
+    第5章
+    内置指令：v-cloak、v-once、条件指令、列表渲染指令
+             方法和事件
+
+    author：Rain
+ -->
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="Vue.js"></script>
+    <link rel="stylesheet" href="style_2.css">
+</head>
+
+<body>
+    <div id="first" v-cloak>{{mes}}</div>
+    
+    <div id='second'>
+        <template v-if="type==='name'">
+            <label> 用户名</label>
+            <input placeholder="请输入用户名" key="name-input">
+        </template>
+        <template v-else>
+            <label>邮箱</label>
+            <input placeholder="请输入邮箱" key="mail-input">
+        </template>
+        <button @click='handleToggleClick'>切换输入类型</button>
+        <p v-show="status === 1">status等于1时显示该行</p>
+    </div>
+
+    <div id='third'>
+        <ul>
+            <template v-for="book in books">
+                <li>书名：{{book.name}}</li>
+                <li>作者：{{book.author}}</li>
+            </template>
+        </ul>
+
+        <ul>
+            <template v-for="(value,key,index) in user">
+                <li>{{index}} {{key}}: {{value}}</li>
+            </template>
+        </ul>
+        <button onclick="sortedBooks()">排序</button>
+    </div>
+
+    <div id="forth">
+        <a href="https://www.baidu.com" @click="handleBanClick('禁止打开',$event)">打开连接</a>
+        <a href="https://www.baidu.com" @click.prevent="handle">打开连接</a> 
+        //$event 访问原生DOM
+        //事件修饰符 prevent
+    </div>
+</body>
+
+<script>
+    var first = new Vue({
+        el:'#first',
+        data:{
+            mes:'这是一段文本',
+        }
+    })
+
+    var second = new Vue({
+        el:'#second',
+        data:{
+            type:'name',
+            status:1
+        },
+        methods:{
+            handleToggleClick:function(){
+                this.type = this.type === 'name' ? 'mail' : 'name' ;
+            }
+        }
+    })
+
+    var third = new Vue ({
+        el:'#third',
+        data:{
+            books:[
+            {
+                name:'《Vue.js》',
+                author:'Rain'
+            },
+            {
+                name:"《前端：HTML5》",
+                author:'Warm Car'
+            },
+            {
+                name:'《前端：10天学会JS编程》',
+                author:'Jack jorden'
+            }
+        ],
+        
+        user:{
+            name:'Rain',
+            gender:"Man",
+            age:23
+        }
+        },
+
+        // computed: {
+        //     sortedBooks:function(){
+        //         return this.books.sort(function(a,b){
+        //             return a.name.length < b.name.length;
+        //         });
+        //     }
+        // }
+    })
+
+    third.books.push({
+        name:"《前端：CSS3最新教程》",
+        author:'Lea Verou'
+    })
+
+    third.books = third.books.filter(function (item){
+        return item.name.match(/前端/);
+    });
+
+    // third.books.splice(0,1);
+
+     function sortedBooks(){
+                return third.books.sort(function(a,b){
+                    return a.name.length < b.name.length;
+                });
+            }
+
+    var forth = new Vue({
+        el:'#forth',
+        methods:{
+            handleBanClick:function (message,event){
+                event.preventDefault();
+                window.alert(message);
+            }
+        }
+    })
+</script>
+</html>

@@ -1,0 +1,89 @@
+<!-- 
+    第四章
+        v-bind 及 class 与 style 绑定
+
+         author：Rain
+ -->
+<html>
+  <head>
+      <script src="Vue.js"></script>
+      <link rel="stylesheet" href="style_1.css">
+  </head>
+  <body>
+      <div id="first" :class="{'active':isActive, 'error':isError}" >
+          <p>这是v-bind class 绑定</p>
+          <div>
+            <p :class="classes">
+              class computed           
+            </p>
+          </div>
+        
+          <div>
+            <p :class="[oneCls,twoCls]">class 数组</p>
+          </div>
+          
+          <div>
+            <button :class="classArray">
+              Button
+            </button>
+          </div>
+          
+          <div>
+            <p :style="{'color':color, 'fontSize':fontSize = 'px'}">&nbsp&nbsp:style 绑定内联样式</p>
+          </div>
+
+          <div>
+            <p :style="styles">写在data和computed里的:style</p>
+          </div>
+
+          <div>
+              <p :style="[styles,styleA]">数组语法，多样式内联</p>
+            </div>
+      </div>
+  </body>
+  <script>
+    var first = new Vue({
+      el:'#first',
+      data:{
+        isActive: true,
+        isError: false,
+        error: null,
+        
+        oneCls: 'one',
+        twoCls:'two',
+        
+        size:'large',
+        disabled:'true',
+
+        color:'black',
+        fontSize:30,
+
+        styles:{
+          color:'green', 
+          fontSize:'20px'
+        },
+
+        styleA:{
+          'text-align': 'center'
+        }
+      },
+      computed: {
+        classes:function(){
+          return {
+            error: this.isActive && !this.error,
+            'classCom': true
+          }
+        },
+        classArray:function(){
+            return [
+              'btn',
+              {
+                ['btn-' + this.size]:this.size !== '',
+               ['btn-disabled']:this.disabled
+              }
+            ];
+        }
+      }
+    })
+  </script>
+</html>
