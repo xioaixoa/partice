@@ -1,0 +1,123 @@
+<!-- 
+
+    第7章
+    第五节  组件高级用法
+    递归
+    内联模板
+    动态组件
+    $nextTick
+    手动挂载
+
+    
+ -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" media="screen" href="style_4.css" />
+    <script src="Vue.js"></script>
+</head>
+
+<body>
+    <div id="first">
+        <first-component :count="1"></first-component>
+        <!-- 动态组件 -->
+        <div>
+            <component :is="currentView"></component>
+            <button @click="handleChangeView('A')">A</button>
+            <button @click="handleChangeView('B')">B</button>
+            <button @click="handleChangeView('C')">C</button>
+        </div>
+        <second-component></second-component>
+    </div>
+
+    <div id="second">
+        <div id="div" v-if="showDiv">
+            $nextTick用法
+        </div>
+        <button @click="getText">获取div内容</button>
+        <div id="mount-div"></div>
+    </div>
+    
+</body>
+<script>
+
+    Vue.component("first-component", {
+        name: "first-component",
+        props: {
+            count: {
+                type: Number,
+                default: 1
+            }
+        },
+        template: '\
+        <div class="child">\
+            <first-component\
+            :count="count + 1"\
+            v-if="count < 3">\
+            </first-component>\
+            <p>递归</p>\
+            </div>',
+    });
+
+    Vue.component('second-component', function (resolve, reject) {
+        window.setTimeout(function () {
+            resolve({
+                template: '<div>我是异步渲染的</div>'
+            });
+        }, 2000)
+    })
+
+    //手动挂载
+    var MyComponent = Vue.extend({
+        template: '<div>Hello: {{name}}</div>',
+        data: function () {
+            return {
+                name: 'Rain X'
+            }
+        }
+    });
+    new MyComponent().$mount('#mount-div');
+
+
+    var first = new Vue({
+        el: '#first',
+        components: {
+            comA: {
+                template: '<p>组件A</p>'
+            },
+            comB: {
+                template: '<p>组件B</p>'
+            },
+            comC: {
+                template: '<p>组件C</p>'
+            },
+        },
+        data: {
+            currentView: 'comA'
+        },
+        methods: {
+            handleChangeView: function (component) {
+                this.currentView = 'com' + component;
+            }
+        }
+    })
+
+    var second = new Vue({
+        el: '#second',
+        data: {
+            showDiv: false
+        },
+        methods: {
+            getText: function () {
+                this.showDiv = true;
+                this.$nextTick(function () {
+                    var text = document.getElementById('div').innerHTML;
+                    console.log(text);
+                });
+            }
+        }
+    })
+</script>
+
+</html>

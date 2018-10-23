@@ -1,0 +1,101 @@
+<!-- 
+
+    第7章
+    第四节  使用slot分发内容
+    作用域
+    slot用法
+    作用域插槽
+    访问slot   $slot
+ -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" media="screen" href="style_4.css" />
+    <script src="Vue.js"></script>
+</head>
+
+<body>
+    <div id="first">
+        <a-component>
+            <h2 slot="header">标题</h2>
+
+            <div>
+                <p>分发的内容</p>
+                <p>更多分发的内容</p>
+            </div>
+            <div>
+                <p slot="footer">底部信息</p>
+            </div>
+        </a-component>
+    </div>
+
+    <div id="second">
+        <my-list :books="books">
+            <template slot="book" slot-scope="props">
+                <li>
+                    {{props.bookName}}
+                </li>
+            </template>
+        </my-list>
+    </div>
+</body>
+<script>
+    Vue.component("a-component", {
+        template: '\
+            <div>\
+            <slot name="header"></slot>\
+                <slot>\
+                    <p>如果父组件没有插入内容，我将作为默认出现</p>\
+                        </slot>\
+                        <slot name="footer"></slot>\
+                        </div>',
+        mounted () {
+            var header = this.$slots.header;
+            // console.log(header);
+            console.log(header[0].elm.innerHTML); 
+            // 访问slot
+        }
+    });
+
+    Vue.component("my-list", {
+        props: {
+            books: {
+                type: Array,
+                default: function () {
+                    return [];
+                }
+            }
+        },
+        template: '\
+            <ul>\
+                <slot name="book"\
+                v-for="book in books"\
+                :book-name="book.name">\
+                </slot>\
+                </ul>'
+    });
+
+    var app = new Vue({
+        el: '#first',   
+    })
+
+    var second = new Vue({
+        el: '#second',
+        data: {
+            books: [
+                {
+                    name: 'HTML'
+                },
+                {
+                    name: 'Css3'
+                },
+                {
+                    name: 'javascript'
+                }
+            ]
+        }
+    })
+</script>
+
+</html>

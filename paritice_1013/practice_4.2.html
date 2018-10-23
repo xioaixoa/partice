@@ -1,0 +1,155 @@
+<!-- 
+
+    第7章
+    第三节  组件通信
+    input v-model
+    
+    third-component 实现双向绑定的v-model组件的两个要求
+    1：接收一个value属性
+    2：有新的value时触发input事件
+    
+    非父子组件通信：
+    bus空Vue  forth-component
+
+    父子组件最好用props和$emit来通信
+    this.$parent
+    this.$children 需要遍历所有组件实例麻烦
+
+    自组建索引$refs fifth-component
+ -->
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" media="screen" href="style_4.css" />
+    <script src="Vue.js"></script>
+</head>
+<body>
+<div id="first">
+    <div>
+        <p>总数:{{total}}</p>
+        <first-component @increase="handleGetTotal" @reduce="handleGetTotal"></first-component>
+    </div>
+    <div>
+        <p>总数:{{totals}}</p>
+        <second-component v-model="totals"></second-component>
+    </div>
+    <div>
+        <p>总数:{{totales}}</p>
+        <third-component v-model="totales"></third-component>
+        <button @click="handleRe">-1</button>
+    </div>
+    <div>
+        {{message}}
+        <forth-component></forth-component>
+        <br>{{msg}}<br>
+    </div>
+    <div>
+        <button @click="handleRef">通过ref获取子组件实例</button>
+        <fifth-component ref="comA"></fifth-component>
+        {{refmsg}}
+    </div>
+</div>
+</body>
+<script>   
+    
+    Vue.component("first-component",{
+        template:'\
+            <button @click="handleIncrease">+1</button>\
+            <button @click="handleReduce">-1</button>\
+       ',
+        data: function(){
+            return {
+                counter: 0
+            }
+        },
+        methods: {
+            handleIncrease:function(){
+                this.counter++;
+                this.$emit("increase",this.counter);
+            },
+            handleReduce:function(){
+                this.counter--;
+                this.$emit("reduce",this.counter);
+            }
+        }
+    });
+
+    Vue.component("second-component",{
+        template:'\
+            <button @click="handleClick">+1</button>\
+            ',
+        data: function(){
+            return {
+                counter: 0
+            }
+        },
+        methods: {
+            handleClick:function(){
+                this.counter++;
+                this.$emit("input",this.counter);
+            }
+        }
+    });
+
+     Vue.component("third-component",{
+         props:['value'],
+        template:'<input :value="value" @input="updateValue">',
+        methods: {
+                updateValue:function(event) {
+                    this.$emit("input",event.target.value);
+                }
+            }
+    });
+
+    var bus = new Vue();
+    Vue.component("forth-component",{
+        template:'<button @click="handleEvent">传递事件</button>',
+        methods: {
+                handleEvent:function(){
+                    bus.$emit("on-message","来自组件forth的内容");
+                    this.$parent.msg = "来自forth的内容,修改了父链"
+                }
+            }
+    });
+
+    Vue.component("fifth-component",{
+        template:'<p>ref=comA的子组件</p>',
+        data:function(){
+            return {
+                message:"fifth子组件的内容"
+            }
+        }
+    })
+
+    var first = new Vue({
+        el:"#first",
+        data:{
+            total: 0,
+            totals: 0,
+            totales: 0,
+            msg:"Parent",
+            message:"",
+            refmsg:"",
+        },
+        mounted:function() {
+            var _this = this ;
+            bus.$on("on-message",function(msg){
+                _this.message = msg;
+            })
+        },
+        methods:{
+            handleGetTotal:function(total){
+                this.total = total;
+            },
+            handleRe:function(){
+                this.totales--;
+            },
+            handleRef:function(){
+                var msg = this.$refs.comA.message;
+                this.refmsg = msg; 
+                console.log(msg);
+            }
+        }
+    })
+</script>
+</html>

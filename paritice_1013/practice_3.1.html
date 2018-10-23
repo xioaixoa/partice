@@ -1,0 +1,114 @@
+<!-- 
+    第6章 
+    第一节表单与v-model
+    Radio单选
+    CheckBox复选框单选与多选
+    下拉栏单选与多选、option v-for动态输出
+    下拉选择如果option不设置value的话就会按照列表的名字来，否则按照value
+    例如选择Javascript 设置value为js  selected就会变成js
+ -->
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" media="screen" href="style_3.css" />
+    <script src="Vue.js"></script>
+</head>
+<body>
+    <div id='first'>
+    <div>
+        <p class='title'>Radio单选：</p>
+        <input type="radio" v-model='picked' value='html' id='html'>
+        <label for="html">HTML</label>
+        <br>
+        <input type="radio" v-model='picked' value='js' id='js'>
+        <label for="radio">Js</label>
+        <br>
+        <input type="radio" v-model='picked' value='css' id='css'>
+        <label for="css">CSS</label>
+        <br>
+        <p>您的选择是：{{picked}}</p>
+    </div>
+    <div>
+        <p class='title'>Checkbox复选单选：</p>
+        <input type="checkbox" v-model="checked" id="checked">
+        <label for="checked">选择状态：{{checked}}</label>
+    </div>
+    <div>
+    <p class='title'>Checkbox复选框：</p>
+    <input type="checkbox" v-model="checkedGroup" value='html' id="html">
+    <label for="html">HTML</label>
+    <br>
+    <input type="checkbox" v-model="checkedGroup" value='js' id="js">
+    <label for="js">Js</label>
+    <br>
+    <input type="checkbox" v-model="checkedGroup" value='css' id="css">
+    <label for="css">CSS</label>
+    <br>
+    <p>你的选择是：{{checkedGroup}}</p>
+    </div>
+    </div>
+
+    <div id='second'>
+        <div>
+            <p class="title">单选下拉栏：</p>
+            <select v-model="selected">
+                <option>html</option>
+                <option value="js">JavaScript</option>
+                <option>css</option>
+            </select>
+            <p>你的选择是：{{selected}}</p>
+        </div>
+        <div>
+            <p class="title">多选下拉栏：</p>
+            <select v-model='selectedGroup' multiple>
+                <option value="html">html</option>
+                <option value="js">JavaScript</option>
+                <option value="css">CSS</option>
+            </select>
+            <p>你的选择是：{{selectedGroup}}</p>
+        </div>
+        <div>
+            <p class="title">循环输出下拉栏：</p>
+            <select v-model="selectedList">
+            <option  v-for="option in options" :value="option.value">{{option.text}}</option>
+        </select>
+        <p>你的选择是：{{selectedList}}</p>
+        </div>
+    </div>
+    
+</body>
+<script>
+    var first = new Vue({
+        el:'#first',
+        data:{
+            picked:'js',
+            checked:false,
+            checkedGroup:['html','css']
+        }
+    })
+
+    var second = new Vue ({
+        el:"#second",
+        data:{
+            selected:'html',
+            selectedGroup: ['html','js'],
+
+            selectedList:'css',
+            options:[
+                {
+                text:"HTML",
+                value:"html"
+                },
+                {
+                    text:"JavaScript",
+                    value:"js"
+                },
+                {
+                    text:"css",
+                    value:"css"
+                }
+            ]
+        }
+    })
+</script>
+</html>

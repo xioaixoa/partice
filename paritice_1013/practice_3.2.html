@@ -1,0 +1,102 @@
+<!-- 
+    第6章
+    第二节 绑定值
+    单选按钮
+    复选框
+    选择列表
+
+    第三节 修饰符
+    .lazy
+    .number
+    .trim 过滤首尾空格
+
+ -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" media="screen" href="style_3.2.css" />
+    <script src="Vue.js"></script>
+</head>
+
+<body>
+    <div id='first'>
+        <div>
+            <p>单选按钮：</p>
+            <input type="radio" v-model='picked' :value='value'>
+            <label>单选选项</label>
+            <p>{{picked}}</p>
+            <p>{{value}}</p>
+        </div>
+        <div>
+            <p>复选框：</p>
+            <input type="checkbox" v-model='toggle' :true-value="value1" :false-value="value2">
+            <label>复选框</label>
+            <p>{{toggle}}</p>
+            <p>{{value1}}</p>
+            <p>{{value2}}</p>
+        </div>
+        <div>
+            <p>选择列表：</p>
+            <select v-model='selected'>
+                <option v-for="option in options" :value="option.value">{{option.text}}</option>
+            </select>
+            <br>
+            你选择的是：{{selected}}
+        </div>
+        <div>
+            <select v-model='selectedNum'>
+                <option :value="{ number: 123}">123</option>
+                <option :value="{ number: 1}">1</option>
+            </select>
+            <br>
+            你选择的是：{{selectedNum.number}}
+        </div>
+        <div>
+            <p class="title">lazy：{{message}}</p>
+            <input type="text" v-model.lazy="message">
+        </div>
+        <div>
+            <p class="title">number：{{number}}</p>
+            <input type="number" v-model.number="number">
+        </div>
+        <div>
+            <p class="title">trim：{{text}}</p>
+            <input type="text" v-model.trim="text">
+        </div>
+    </div>
+
+    <script>
+        var first = new Vue({
+            el: '#first',
+            data: {
+                picked: false,
+                value: 123,
+                toggle: false,
+                value1: 'a',
+                value2: 'b',
+                selected: '',
+                selectedNum: '',
+                message: '',
+                number: 520,
+                text: "",
+                options: [
+                    {
+                        text: "HTML",
+                        value: "html"
+                    },
+                    {
+                        text: "JavaScript",
+                        value: "js"
+                    },
+                    {
+                        text: "css",
+                        value: "css"
+                    }
+                ]
+            }
+        })
+    </script>
+</body>
+
+</html>

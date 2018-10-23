@@ -1,0 +1,90 @@
+<!-- 
+
+    第7章
+    第一节 组件与复用
+    创建组件后要注册，全局注册和局部注册
+    局部组件需只能在该实例的作用域内使用
+    table里面只能用 is来加载组件
+
+
+    第二节 使用Props传递数据
+    传递字符串可以不使用V-bind 其他不行
+    props 要是驼峰变量
+    组件return的数据作用域只在组件本身 
+
+ -->
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" media="screen" href="style_4.css" />
+    <script src="Vue.js"></script>
+</head>
+<body>
+   <div id="first">
+       <div>
+           <table>
+               <tbody is="my-component-part"></tbody>
+           </table>
+       </div>
+       <div>
+           <label>父组件的数据：</label>
+           <input type="text" v-model="parentMessage"> 
+           <my-component :message="parentMessage" message-text="来自父组件的数据"></my-component>
+       </div>   
+       <div>
+           <first-component :propA=100></first-component>
+       </div>
+   </div>
+</body>
+<script>   
+    
+    Vue.component("my-component",{
+        props: ["messageText","message"],
+        template:"<p>{{messageText}}:{{message}}</p>",
+        data: function(){
+            return {
+                counter: 0
+            };
+        }
+    })
+
+    var Child = {
+        template:"<div>我是局部组件</div>"
+    }
+    var first = new Vue({
+        el:"#first",
+        components: {
+            "my-component-part":Child
+        },
+        data:{
+            parentMessage:" It is me !"
+        }
+    })
+
+    Vue.component('first-component',{
+        props:{
+        propA: Number,
+        propB:[String , Number],
+        propC:{
+            type: Number,
+            required:true
+        },
+        propD:{
+            type:Boolean,
+            required:true
+        },
+        propE:{
+            type:Array,
+        default:function(){
+            return [];
+        },
+        propF:{
+            validator: function(value){
+                return value > 10;
+            }
+        }
+        }
+    }
+    })
+</script>
+</html>
