@@ -111,6 +111,7 @@
         methods: {
             getText: function () {
                 this.showDiv = true;
+                console.log(this.showDiv);
                 this.$nextTick(function () {
                     var text = document.getElementById('div').innerHTML;
                     console.log(text);
