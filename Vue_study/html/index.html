@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="../vue/Vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="inputValue" ><button @click="add" >提交</button>
+        <ul>
+            <todo-item v-for="(item,index) in list"  :input="item" :index="index" @delete="delItem"></todo-item>
+        </ul>
+        <div>
+        {{userInfo.name}}
+    </div>
+    </div>
+    
+    <div id="life">
+{{value}}
+    </div>
+
+
+</body>
+<script>
+
+
+// var TodoItem = {
+//     props: ['input','index'],
+//     template:"<li @click='del'>{{input}}</li>",
+//     methods: {
+//         del:function(){
+//             this.$emit('delete',this.index)
+//         }
+//     }
+// }
+Vue.component("TodoItem",{
+    props: ['input','index'],
+    template:"<li @click='del'>{{input}}</li>",
+    methods: {
+        del:function(){
+            this.$emit('delete',this.index)
+        }
+    },
+})
+var app = new Vue({
+  el:"#app",
+  data : {
+          list:['apple','bnana'],
+          inputValue:"",
+          userInfo:{
+              name:"rain",
+              address:"bejing"
+          }
+      
+  },
+  methods:{
+    add:function(){
+            this.list.push(this.inputValue)
+        },
+      delItem:function(index){
+           this.list.splice(index,1)
+      }
+  }
+})
+
+
+    var life = new Vue({
+        el: '#life',
+        data: {
+            value: 'Hello Wrold'
+        },
+        beforeCreate() {
+            console.log
+                ("beforeCreate");
+        },
+        created() {
+            console.log("created")
+        },
+        beforeMount() {
+            console.log(this.$el)
+            console.log("beforeMount")
+        },
+        mounted() {
+            console.log(this.$el)
+            console.log("mounted")
+        },
+        beforeUpdate() {
+            console.log("beforeUpdate")
+        },
+        updated() {
+            console.log("updated")
+        },
+        beforeDestroy() {
+            console.log("beforeDestroy")
+        },
+        destroyed() {
+            console.log("destroy")
+        },
+        computed: {
+            fullName: {
+                get: function() {
+                    return this.firstName + ' ' + this.lastName;
+                },
+                set: function(value) {
+                    var arr = value.split(" ");
+                    this.firstName = arr[0];
+                    this.lastName = arr[1];
+                    console.log("value")
+                }
+            }
+        }
+    })
+   
+
+    
+</script>
+</html>

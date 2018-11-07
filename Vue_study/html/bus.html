@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="../vue/Vue.js"></script>
+</head>
+
+<body>
+    <div id='root'>
+        <child content="Dell"></child>
+        <child content="Rain"></child>
+    
+        <div>
+            <demo>
+                <div slot="header">替换子组件name为header的slot</div>
+                <!-- <span>替换子组件的没有具名的slot</span> -->
+                <div slot="footer">替换子组件name为footer的slot</div>
+            </demo>
+        </div>
+    </div>
+
+    
+</body>
+
+<script>
+    Vue.component('demo',{
+        template:'<div><slot name="header">\
+       <h1>子组件name为Header的slot</h1>\
+    </slot>\
+    \
+    <slot>\
+       <p>子组件不具名slot</p>\
+    </slot>\
+  \
+    <slot name="footer">\
+       <p>子组件name为footer的slot</p>\
+    </slot></div>'
+    })
+
+
+
+    //每一个Vue组件上都有bus属性
+    Vue.prototype.bus = new Vue() 
+
+    Vue.component("child", {
+        data: function () {
+            return {
+                selfContent: this.content
+            }
+        },
+        props: {
+            content: String
+        },
+        template: '<div\
+            @click="handleClick">{{selfContent}}</div>',
+        methods: {
+            handleClick: function () {
+                this.bus.$emit('change', this.selfContent)
+            }
+        },
+        mounted: function () {
+            //this作用域发生了变化，所以保存起来 
+            var this_ = this
+            this.bus.$on('change', function (msg) {
+                this_.selfContent = msg
+            })
+        }
+    })
+
+    var vm = new Vue({
+        el: '#root'
+    })
+
+</script>
+
+</html>

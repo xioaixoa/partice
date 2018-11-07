@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="../vue/Vue.js"></script>
+</head>
+<body>
+    <div id='root'>
+        <child content="Dell"></child>
+        <child content="Rain"></child>
+    </div>
+</body>
+
+<script>
+    Vue.prototype.bus = new Vue()
+
+    Vue.component("child",{
+        data: function() {
+            return {
+                selfContent: this.content
+            }
+        },
+        props: {
+            content: String
+        },
+        template: '<div\
+        @click="handleClick">{{selfContent}}</div>',
+        methods: {
+            handleClick: function(){
+                this.bus.$emit('change',this.selfContent)
+            }
+        },
+        mounted: function() {
+            var this_ = this 
+            this.bus.$on('change',function(msg){
+                this_.selfContent = msg 
+            })
+        }
+    })
+
+</script>
+</html>
