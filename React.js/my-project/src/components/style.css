@@ -1,3 +1,108 @@
 .input {
-    border-color: red;
+  border-color: red;
+}
+
+.show {
+  /* opacity: 1; */
+  /* transition:  all 1s ease-in; */
+  /* animation: show-item 2s ease-in forwards; */
+}
+
+.hide {
+  /* opacity: 0; */
+  /* transition: all 1s ease-in; */
+  /* animation: hide-item 2s ease-in forwards; */
+}
+
+.cartoon {
+  text-align: center;
+  color: blue;
+  font-size: 20px;
+}
+/* 
+@keyframes hide-item {
+    100% {
+        opacity: 1;
+        color:  red;
+    }
+    50% {
+        opacity: 0.5;
+        color:  green;
+    }
+    0% {
+        opacity:  0;
+        color:  blue;
+    }
+}
+
+@keyframes show-item {
+    0% {
+        opacity: 1;
+        color:  red;
+    }
+    50% {
+        opacity: 0.5;
+        color:  green;
+    }
+    100% {
+        opacity:  0;
+        color:  blue;
+    }
+} */
+
+p {
+    font-size: 5rem;
+    font-weight: bold;
+}
+
+
+
+.fade-appear {
+    font-style: italic;
+}
+
+.fade-appear-active {
+    font-style: italic;
+}
+
+.fade-enter  {
+  opacity: 0.5;
+}
+
+.fade-enter-active  {
+  opacity: 1;
+  transition: opacity 1.5s ease-in;
+}
+
+.fade-enter-done {
+  opacity: 1;
+}
+
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit-active {
+  opacity: 0.5;
+  transition: opacity 1.5s ease-in;
+}
+
+.fade-exit-done {
+  opacity: 0.5;
+} 
+
+
+
+.item-enter , .item-appear  {
+  opacity: 0;
+}
+
+.item-enter-active , .item-appear-active{
+  opacity: 1;
+  transition: opacity 1s ease-in;
+}
+
+.item-enter-done {
+  opacity: 1;
 }

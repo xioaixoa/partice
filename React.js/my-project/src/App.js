@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 // import './App.css';
 import NameCard from './components/NameCard';
-import TodoList from './components/TodoList'
+import TodoList from './components/TodoList';
+import Cartoon from './components/Cartoon';
 const tags = ['男神','傻逼']
 
 class App extends Component {
@@ -14,7 +15,8 @@ class App extends Component {
         </header>
         <Hello></Hello>
         <NameCard name="Rain" number={1379896} isHuman tags={tags}/> */}
-        <TodoList> </TodoList>
+        {/* <TodoList> </TodoList> */}
+        <Cartoon></Cartoon>
       </div>
 
 
